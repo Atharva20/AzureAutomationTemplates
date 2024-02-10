@@ -11,6 +11,9 @@ parameters:
   - name: backendAzureRmKey
   - name: varFile
 
+variables:
+      commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
+      
 steps:
   - checkout: self
     clean: true
