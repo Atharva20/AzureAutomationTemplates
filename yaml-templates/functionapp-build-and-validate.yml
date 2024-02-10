@@ -39,7 +39,7 @@ steps:
     inputs:
       command: 'test'
       projects: ${{ parameters.projects }}
-      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.DefaultWorkingDirectory)/TestResults/Coverage/'
+      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.workingDirectory)/TestResults/Coverage/'
 
   - task: PublishCodeCoverageResults@1
     displayName: 'Checking the codecoverage'
@@ -53,7 +53,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXml = "$(Build.DefaultWorkingDirectory)/TestResults/Coverage/*.xml"
+        $coverageXml = "$(Build.workingDirectory)/TestResults/Coverage/*.xml"
             $coverageReport = [xml](Get-Content $coverageXml)
             $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
         
