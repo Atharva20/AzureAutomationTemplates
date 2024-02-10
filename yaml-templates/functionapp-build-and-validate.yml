@@ -45,8 +45,8 @@ steps:
     displayName: 'Checking the codecoverage'
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Build.DefaultWorkingDirectory)/TestResults/Coverage/*.xml'
-      reportDirectory: '$(Build.DefaultWorkingDirectory)/TestResults/Coverage/'
+      summaryFileLocation: '$(Build.workingDirectory)/TestResults/Coverage/*.xml'
+      reportDirectory: '$(Build.workingDirectory)/TestResults/Coverage/'
       failIfCoverageEmpty: true
   - task: PowerShell@2
     displayName: 'Check if code coverage is beyond threshold.'
