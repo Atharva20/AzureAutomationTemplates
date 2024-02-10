@@ -10,9 +10,6 @@ parameters:
   - name: backendAzureRmContainerName
   - name: backendAzureRmKey
   - name: varFile
-
-variables:
-      commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
       
 steps:
   - checkout: self
@@ -46,5 +43,5 @@ steps:
       provider: 'azurerm'
       command: 'plan'
       workingDirectory: '${{ parameters.workingDirectory }}' #'$(System.DefaultWorkingDirectory)/Terraform'
-      commandOptions: '$(commandOptions)'
+      commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
       environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
