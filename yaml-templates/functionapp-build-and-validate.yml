@@ -40,7 +40,7 @@ steps:
       command: 'test'
       projects: '**/Unit-Tests/*.csproj'
       arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.DefaultWorkingDirectory)/TestResults/Coverage/'
-      workingDirectory: '$(workingDirectory)'
+
   - task: PublishCodeCoverageResults@1
     displayName: 'Checking the codecoverage'
     inputs:
