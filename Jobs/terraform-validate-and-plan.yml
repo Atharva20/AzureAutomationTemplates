@@ -1,0 +1,53 @@
+# This template will validate and plan the Terraform validate pipeline
+
+
+parameters:
+  - name: workingDirectory
+  - name: backendServiceArm
+  - name: environmentServiceNameAzureRM
+  - name: backendAzureRmResourceGroupName
+  - name: backendAzureRmStorageAccountName
+  - name: backendAzureRmContainerName
+  - name: backendAzureRmKey
+  - name: varFile
+
+jobs:
+  - job: ValidateAndPlanTerraform
+
+    variables:
+      commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
+    
+    steps:
+      - checkout: self
+        clean: true
+
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: '1.6.2'
+
+      - task: TerraformTaskV4@4
+        displayName: 'Inititalise Terraform'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '${{ parameters.workingDirectory }}'
+          backendServiceArm: '${{ parameters.backendServiceArm }}'
+          backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
+          backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
+          backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
+          backendAzureRmKey: '${{ parameters.backendAzureRmKey }}'
+
+      - task: TerraformTaskV4@4
+        displayName: 'Validate Terraform'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '${{ parameters.workingDirectory }}'
+
+      - task: TerraformTaskV4@4
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '${{ parameters.workingDirectory }}' #'$(System.DefaultWorkingDirectory)/Terraform'
+          commandOptions: '$(commandOptions)'
+          environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
