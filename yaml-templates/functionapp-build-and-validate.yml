@@ -40,21 +40,21 @@ steps:
     inputs:
       command: 'test'
       projects: '**/Unit-Tests/*.csproj'
-      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)'
 
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Checking the codecoverage'
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
-      reportDirectory: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
-      failIfCoverageEmpty: true
+  # - task: PublishCodeCoverageResults@1
+  #   displayName: 'Checking the codecoverage'
+  #   inputs:
+  #     codeCoverageTool: 'Cobertura'
+  #     summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
+  #     reportDirectory: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+  #     failIfCoverageEmpty: true
 
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXml = "$(Build.ArtifactStagingDirectory)/**/**/*.xml"
+        $coverageXml = "$(Build.ArtifactStagingDirectory)/coverage.cobertura.xml"
               Write-Host "Coverage XML file path: $coverageXml"
         
               # Load the coverage XML report
