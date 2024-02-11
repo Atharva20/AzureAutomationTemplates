@@ -54,15 +54,15 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/coverage.cobertura.xml"
+        $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*/coverage.cobertura.xml"
               Write-Host "Coverage XML file path: $coverageXml"
         
               # Load the coverage XML report
               $coverageReport = [xml](Get-Content $coverageXml)
-              Write-Host "Coverage XML file report: $coverageReport"
+              Write-Host "Coverage XML file report: [xml](Get-Content $coverageXml)"
 
               
-              Write-Host "Coverage XML file report: $coverageReport.coverage.'@line-rate'"
+              Write-Host "Coverage XML file report: [float]$coverageReport.coverage.'@line-rate'"
         
               # Extract the coverage percentage from the report
               $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
