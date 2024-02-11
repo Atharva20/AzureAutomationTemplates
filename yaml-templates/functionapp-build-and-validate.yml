@@ -26,14 +26,14 @@ steps:
   - task: NuGetToolInstaller@1
     displayName: 'Installing the nuget packages'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Restoring the nuget packages'
-    inputs:
-      command: 'restore'
-      projects: '${{ parameters.projects }}'
-      feedsToUse: 'select'
-      vstsFeed: 'atharvab496'
-      #'f72ed39b-6772-436c-8214-d88f23e69f0a'
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'Restoring the nuget packages'
+  #   inputs:
+  #     command: 'restore'
+  #     projects: '${{ parameters.projects }}'
+  #     feedsToUse: 'select'
+  #     vstsFeed: 'atharvab496'
+  #     #'f72ed39b-6772-436c-8214-d88f23e69f0a'
 
   - task: DotNetCoreCLI@2
     displayName: 'Test Cases Running'
@@ -49,4 +49,33 @@ steps:
       summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
       reportDirectory: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
       failIfCoverageEmpty: true
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        |
+              # Search for the coverage XML file
+              $coverageXmlPath = Get-ChildItem -Path $(Agent.TempDirectory) -Filter 'coverage.cobertura.xml' -Recurse | Select-Object -ExpandProperty FullName
+        
+              if ($coverageXmlPath) {
+                # If the coverage XML file is found, read and parse it
+                $coverageReport = [xml](Get-Content -Path $coverageXmlPath)
+                
+                # Extract the line coverage percentage
+                $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
+                Write-Host "Code coverage percentage: $coveragePercent"
+        
+                # Check if code coverage is above 80%
+                if ($coveragePercent -gt 80) {
+                  Write-Host "Code coverage is above 80%. Proceeding with deployment..."
+                } else {
+                  Write-Host "Code coverage is below 80%. Aborting deployment."
+                  exit 1
+                }
+              } else {
+                # If the coverage XML file is not found, abort deployment
+                Write-Host "Coverage XML file not found. Aborting deployment."
+                exit 1
+              }
 
