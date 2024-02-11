@@ -54,7 +54,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*/coverage.cobertura.xml"
+        $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/coverage.cobertura.xml"
               Write-Host "Coverage XML file path: $coverageXml"
         
               # Load the coverage XML report
