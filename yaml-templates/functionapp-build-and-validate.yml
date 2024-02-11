@@ -38,16 +38,17 @@ steps:
     displayName: 'Test Cases Running'
     inputs:
       command: 'test'
-      projects: ${{ parameters.projects }}
-      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.workingDirectory)/TestResults/Coverage/'
+      projects: '**/Unit-Tests/*.csproj'
+      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
 
   - task: PublishCodeCoverageResults@1
     displayName: 'Checking the codecoverage'
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Build.workingDirectory)/TestResults/Coverage/*.xml'
-      reportDirectory: '$(Build.workingDirectory)/TestResults/Coverage/'
+      summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
+      reportDirectory: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
       failIfCoverageEmpty: true
+
   - task: PowerShell@2
     displayName: 'Check if code coverage is beyond threshold.'
     inputs:
