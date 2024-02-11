@@ -30,9 +30,9 @@ steps:
     displayName: 'Restoring the nuget packages'
     inputs:
       command: 'restore'
-      projects: ${{ parameters.projects }}
+      projects: '${{ parameters.projects }}'
       feedsToUse: 'select'
-      vstsFeed:  ${{ parameters.privateNugetFeedName }}
+      vstsFeed: 'atharvab496'
       #'f72ed39b-6772-436c-8214-d88f23e69f0a'
 
   - task: DotNetCoreCLI@2
