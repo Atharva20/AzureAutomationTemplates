@@ -54,27 +54,26 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/coverage.cobertura.xml"
-              Write-Host "Coverage XML file path: $coverageXml"
+        $coverageXmlPath = Get-ChildItem -Path $(Agent.TempDirectory) -Filter 'coverage.cobertura.xml' -Recurse | Select-Object -ExpandProperty FullName
         
-              # Load the coverage XML report
-              $coverageReport = [xml](Get-Content $coverageXml)
-              Write-Host "Coverage XML file report: [xml](Get-Content $coverageXml)"
-
-              
-              Write-Host "Coverage XML file report: [float]$coverageReport.coverage.'@line-rate'"
+              if ($coverageXmlPath) {
+                # If the coverage XML file is found, read and parse it
+                [xml]$coverageReport = Get-Content -Path $coverageXmlPath
+                
+                # Extract the line coverage percentage
+                $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
+                Write-Host "Code coverage percentage: $coveragePercent"
         
-              # Extract the coverage percentage from the report
-              $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
-        
-              Write-Host "Coverage percentage: $coveragePercent%"
-        
-              if ($coveragePercent -ge 80) {
-                Write-Host "Code coverage is above 80% ($coveragePercent%)"
-                Write-Host "Proceeding with deployment..."
+                # Check if code coverage is above 80%
+                if ($coveragePercent -gt 80) {
+                  Write-Host "Code coverage is above 80%. Proceeding with deployment..."
+                } else {
+                  Write-Host "Code coverage is below 80%. Aborting deployment."
+                  exit 1
+                }
               } else {
-                Write-Host "Code coverage is below 80% ($coveragePercent%)"
-                Write-Host "Aborting deployment."
+                # If the coverage XML file is not found, abort deployment
+                Write-Host "Coverage XML file not found. Aborting deployment."
                 exit 1
               }
 
