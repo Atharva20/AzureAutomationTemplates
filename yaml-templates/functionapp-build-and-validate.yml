@@ -39,16 +39,16 @@ steps:
     displayName: 'Test Cases Running'
     inputs:
       command: 'test'
-      projects: '**/Unit-Tests/*.csproj'
-      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+      projects: '${{ parameters.projects }}'
+      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
 
-  # - task: PublishCodeCoverageResults@1
-  #   displayName: 'Checking the codecoverage'
-  #   inputs:
-  #     codeCoverageTool: 'Cobertura'
-  #     summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
-  #     reportDirectory: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
-  #     failIfCoverageEmpty: true
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Checking the codecoverage'
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
+      reportDirectory: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+      failIfCoverageEmpty: true
 
   - task: PowerShell@2
     inputs:
