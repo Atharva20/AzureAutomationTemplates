@@ -53,16 +53,25 @@ steps:
     displayName: 'Check if code coverage is beyond threshold.'
     inputs:
       targetType: 'inline'
-      script: |
+      script:  |
         $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml"
-            $coverageReport = [xml](Get-Content $coverageXml)
-            $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
+        Write-Host "Coverage XML file path: $coverageXml"
+
+        # Load the coverage XML report
+        $coverageReport = [xml](Get-Content $coverageXml)
+
+        # Extract the coverage percentage from the report
+        $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
+
+        Write-Host "Coverage percentage: $coveragePercent%"
+
+        if ($coveragePercent -ge 80) {
+          Write-Host "Code coverage is above 80% ($coveragePercent%)"
+          Write-Host "Proceeding with deployment..."
+        } else {
+          Write-Host "Code coverage is below 80% ($coveragePercent%)"
+          Write-Host "Aborting deployment."
+          exit 1
+        }
+
         
-            if ($coveragePercent -ge 80) {
-              Write-Host "Code coverage is $($coveragePercent)%"
-              Write-Host "Proceeding with deployment..."
-            } else {
-              Write-Host "Code coverage is below 80% ($($coveragePercent)%)"
-              Write-Host "Aborting deployment."
-              exit 1
-            }
