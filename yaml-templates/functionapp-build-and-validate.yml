@@ -66,4 +66,3 @@ steps:
               Write-Host "Aborting deployment."
               exit 1
             }
-      workingDirectory: '$(workingDirectory)'
