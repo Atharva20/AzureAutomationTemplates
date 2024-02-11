@@ -16,15 +16,15 @@ steps:
   - checkout: self
     clean: true
 
-  - task: UseDotNet@2
-    name: 'InstallDotNetSdk'
-    displayName: 'Install the .Net Core sdk'
-    inputs:
-      packageType: 'sdk'
-      version: ${{ parameters.dotNetSdkVersion }}
+  # - task: UseDotNet@2
+  #   name: 'InstallDotNetSdk'
+  #   displayName: 'Install the .Net Core sdk'
+  #   inputs:
+  #     packageType: 'sdk'
+  #     version: ${{ parameters.dotNetSdkVersion }}
 
-  - task: NuGetToolInstaller@1
-    displayName: 'Installing the nuget packages'
+  # - task: NuGetToolInstaller@1
+  #   displayName: 'Installing the nuget packages'
 
   # - task: DotNetCoreCLI@2
   #   displayName: 'Restoring the nuget packages'
@@ -38,7 +38,7 @@ steps:
     displayName: 'Test Cases Running'
     inputs:
       command: 'test'
-      projects: ${{ parameters.projects }}
+      projects: '**/Unit-Tests/*.csproj'
       arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.workingDirectory)/TestResults/Coverage/'
 
   - task: PublishCodeCoverageResults@1
