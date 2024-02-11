@@ -40,7 +40,7 @@ steps:
     inputs:
       command: 'test'
       projects: '${{ parameters.projects }}'
-      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+      arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
 
   - task: PublishCodeCoverageResults@1
     displayName: 'Checking the codecoverage'
