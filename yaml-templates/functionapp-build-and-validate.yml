@@ -54,7 +54,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXmlPath = Get-ChildItem -Path $(Agent.TempDirectory) -Filter 'coverage.cobertura.xml' -Recurse | Select-Object -ExpandProperty FullName
+        $coverageXmlPath = Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Filter 'coverage.cobertura.xml' -Recurse | Select-Object -ExpandProperty FullName
         
               if ($coverageXmlPath) {
                 # If the coverage XML file is found, read and parse it
