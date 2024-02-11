@@ -54,7 +54,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $coverageXml = "$(Build.workingDirectory)/TestResults/Coverage/*.xml"
+        $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml"
             $coverageReport = [xml](Get-Content $coverageXml)
             $coveragePercent = [float]$coverageReport.coverage.'@line-rate' * 100
         
