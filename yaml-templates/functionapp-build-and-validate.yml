@@ -16,39 +16,80 @@ parameters:
     type: boolean
     default: false
 
-jobs:
-  - job: 'example'
-    variables:
-      anyTfChanges: false
+stages:
+  - stage: myexperiment
+    jobs:
+      - job: myexp
+        displayName: 'asd'
+        variables:
+          anyTfChanges: false
+        
+        steps:
+          - checkout: self
+            clean: true
+          
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                if (90 -ge 80) {
+                                                     Write-Host "Code coverage is above 80% ($coveragePercent%)"
+                                                     Write-Output "##vso[task.setvariable variable=anyTfChanges]true"
+                                                     Write-Host "vso[task.setvariable variable=anyTfChanges;]true"
+                                                   } else {
+                                                     Write-Host "Code coverage is below 80% ($coveragePercent%)"
+                                                     Write-Host "Aborting deployment."
+                                                     exit 1
+                                                   }
 
-    steps:
-      - checkout: self
-        clean: true
-      - task: PowerShell@2
-        inputs:
-          targetType: 'inline'
-          script: |
-            if (90 -ge 80) {
-                                     Write-Host "Code coverage is above 80% ($coveragePercent%)"
-                                     Write-Output "##vso[task.setvariable variable=anyTfChanges]true"
-                                     Write-Host "vso[task.setvariable variable=anyTfChanges;]true"
-                                   } else {
-                                     Write-Host "Code coverage is below 80% ($coveragePercent%)"
-                                     Write-Host "Aborting deployment."
-                                     exit 1
-                                   }
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                if (anyTfChanges) {
+                                                     Write-Host "Proceeding with deployment..."
+                                                   } else {
+                                                     Write-Host "Code coverage is below 80% ($coveragePercent%)"
+                                                     Write-Host "Aborting deployment."
+                                                     exit 1
+                                                   }
 
-      - task: PowerShell@2
-        inputs:
-          targetType: 'inline'
-          script: |
-            if (anyTfChanges) {
-                                     Write-Host "Proceeding with deployment..."
-                                   } else {
-                                     Write-Host "Code coverage is below 80% ($coveragePercent%)"
-                                     Write-Host "Aborting deployment."
-                                     exit 1
-                                   }
+# jobs:
+#   - job: 'example'
+#     variables:
+#       anyTfChanges: false
+
+#     steps:
+#       - checkout: self
+#         clean: true
+#       - task: PowerShell@2
+#         inputs:
+#           targetType: 'inline'
+#           script: |
+#             if (90 -ge 80) {
+#                                      Write-Host "Code coverage is above 80% ($coveragePercent%)"
+#                                      Write-Output "##vso[task.setvariable variable=anyTfChanges]true"
+#                                      Write-Host "vso[task.setvariable variable=anyTfChanges;]true"
+#                                    } else {
+#                                      Write-Host "Code coverage is below 80% ($coveragePercent%)"
+#                                      Write-Host "Aborting deployment."
+#                                      exit 1
+#                                    }
+
+#       - task: PowerShell@2
+#         inputs:
+#           targetType: 'inline'
+#           script: |
+#             if (anyTfChanges) {
+#                                      Write-Host "Proceeding with deployment..."
+#                                    } else {
+#                                      Write-Host "Code coverage is below 80% ($coveragePercent%)"
+#                                      Write-Host "Aborting deployment."
+#                                      exit 1
+#                                    }
+
+
+#####################################
 
 # steps:
 #   - checkout: self
