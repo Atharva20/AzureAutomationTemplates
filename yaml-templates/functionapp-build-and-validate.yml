@@ -68,6 +68,7 @@ steps:
 
                       if ($coveragePercent -ge 80) {
                         Write-Host "Code coverage is above 80% ($coveragePercent%)"
+                        Write-Output "##vso[task.setvariable variable=anyTfChanges]true"
                         Write-Host "vso[task.setvariable variable=anyTfChanges;]true"
                         Write-Host "Proceeding with deployment..."
                       } else {
@@ -78,7 +79,7 @@ steps:
 
   - task: DotNetCoreCLI@2
     displayName: 'Build ${{ parameters.projectName }}'
-    condition: eq(variables.anyTfChanges, true)
+    condition: eq('${{ parameters.anyTfChanges }}', 'true')
     inputs:
       command: 'build'
       projects: '${{ parameters.projects }}'
