@@ -2,7 +2,6 @@
 
 
 parameters:
-  - name: workingDirectory
   - name: functionAppName
   - name: environmentServiceNameAzureRM
     
