@@ -16,24 +16,24 @@ steps:
   - checkout: self
     clean: true
 
-  # - task: UseDotNet@2
-  #   name: 'InstallDotNetSdk'
-  #   displayName: 'Install the .Net Core sdk'
-  #   inputs:
-  #     packageType: 'sdk'
-  #     version: ${{ parameters.dotNetSdkVersion }}
+  - task: UseDotNet@2
+    name: 'InstallDotNetSdk'
+    displayName: 'Install the .Net Core sdk'
+    inputs:
+      packageType: 'sdk'
+      version: ${{ parameters.dotNetSdkVersion }}
 
   - task: NuGetToolInstaller@1
     displayName: 'Installing the nuget packages'
 
-  # - task: DotNetCoreCLI@2
-  #   displayName: 'Restoring the nuget packages'
-  #   inputs:
-  #     command: 'restore'
-  #     projects: '${{ parameters.projects }}'
-  #     feedsToUse: 'select'
-  #     vstsFeed: 'atharvab496'
-  #     #'f72ed39b-6772-436c-8214-d88f23e69f0a'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restoring the nuget packages'
+    inputs:
+      command: 'restore'
+      projects: '${{ parameters.projects }}'
+      feedsToUse: 'select'
+      vstsFeed: 'atharvab496'
+      #'f72ed39b-6772-436c-8214-d88f23e69f0a'
 
   - task: DotNetCoreCLI@2
     displayName: 'Test Cases Running'
@@ -55,16 +55,13 @@ steps:
       targetType: 'inline'
       script: |
         $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/coverage.cobertura.xml"
-                      Write-Host "Coverage XML file path: $coverageXml"
-                
+
                       # Load the coverage XML report
                       $coverageReport = [xml](Get-Content $coverageXml)
-                                      
+
                       # Extract the coverage percentage from the report
                       $coveragePercent = [float]$coverageReport.coverage.'line-rate' * 100
-                
-                      Write-Host "Coverage percentage: $coveragePercent%"
-                
+
                       if ($coveragePercent -ge 80) {
                         Write-Host "Code coverage is above 80% ($coveragePercent%)"
                         Write-Host "Proceeding with deployment..."
