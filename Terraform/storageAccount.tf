@@ -15,12 +15,12 @@ resource "azurerm_storage_container" "sa_tfstate_container_dev" {
   container_access_type = "private"
 }
 
-resource "azurerm_storage_container" "sa_tfstate_container_dev2" {
-  count                 = var.deploy_tier ? 1 : 0
-  name                  = local.tfstate_container_name2
-  storage_account_name  = azurerm_storage_account.sa_tfstate[0].name
-  container_access_type = "private"
-}
+# resource "azurerm_storage_container" "sa_tfstate_container_dev2" {
+#   count                 = var.deploy_tier ? 1 : 0
+#   name                  = local.tfstate_container_name2
+#   storage_account_name  = azurerm_storage_account.sa_tfstate[0].name
+#   container_access_type = "private"
+# }
 
 # resource "azurerm_storage_container" "sa_tfstate_container_stage" {
 #   count                 = var.deploy_tier ? 1 : 0

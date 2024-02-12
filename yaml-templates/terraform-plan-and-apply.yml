@@ -48,32 +48,11 @@ steps:
       provider: 'azurerm'
       command: 'plan'
       workingDirectory: '${{ parameters.workingDirectory }}'
-      commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
+      commandOptions: '-input=false -var-file="${{ parameters.varFile }}"'
       environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
-
-  - task: PowerShell@2
-    displayName: 'Checking the tf-Plan'
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Write-Host "LASTEXITCODE : $LASTEXITCODE"
-                              $plan = $(terraform show -json tfplan | ConvertFrom-Json)
-                              $actions = $plan.resource_changes.change.actions
-                              Write-Host "Terraform actions : $actions"
-                              if (($actions -contains 'create') -or ($actions -contains 'delete') -or ($actions -contains 'update'))
-                              {
-                                Write-Host "Terraform will perform the following actions : $actions"
-                                Write-Host "##vso[task.setvariable variable=anyTfChanges;]true"
-                              }
-                              else
-                              {
-                                Write-Host "There is no change detected in Terraform tfplan file"
-                              }
-      workingDirectory: '${{ parameters.workingDirectory }}'
 
   - task: TerraformTaskV4@4
     displayName: 'Apply Terraform'
-    condition: eq(variables.anyTfChanges, true)
     inputs:
       provider: 'azurerm'
       command: 'apply'
