@@ -1,7 +1,5 @@
 # This Template builds a function app project, validates by running unit tests and publishes the code coverage.
 
-variables:
-  anyTfChanges: false
 
 parameters:
   - name: workingDirectory
@@ -14,75 +12,118 @@ parameters:
   - name: privateNugetFeedName
     type: string
     default: 'atharvab496'
+  - name: anyTfChanges
+    type: boolean
+    default: false
 
+jobs:
+  - job: 'example'
+    variables:
+      anyTfChanges: false
 
-steps:
-  - checkout: self
-    clean: true
+    steps:
+      - checkout: self
+        clean: true
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            if (90 -ge 80) {
+                                     Write-Host "Code coverage is above 80% ($coveragePercent%)"
+                                     Write-Output "##vso[task.setvariable variable=anyTfChanges]true"
+                                     Write-Host "vso[task.setvariable variable=anyTfChanges;]true"
+                                   } else {
+                                     Write-Host "Code coverage is below 80% ($coveragePercent%)"
+                                     Write-Host "Aborting deployment."
+                                     exit 1
+                                   }
 
-  # - task: UseDotNet@2
-  #   name: 'InstallDotNetSdk'
-  #   displayName: 'Install the .Net Core sdk'
-  #   inputs:
-  #     packageType: 'sdk'
-  #     version: ${{ parameters.dotNetSdkVersion }}
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            if (anyTfChanges) {
+                                     Write-Host "Proceeding with deployment..."
+                                   } else {
+                                     Write-Host "Code coverage is below 80% ($coveragePercent%)"
+                                     Write-Host "Aborting deployment."
+                                     exit 1
+                                   }
 
-  # - task: NuGetToolInstaller@1
-  #   displayName: 'Installing the nuget packages'
+# steps:
+#   - checkout: self
+#     clean: true
 
-  # - task: DotNetCoreCLI@2
-  #   displayName: 'Restoring the nuget packages'
-  #   inputs:
-  #     command: 'restore'
-  #     projects: '${{ parameters.projects }}'
-  #     feedsToUse: 'select'
-  #     vstsFeed: ${{ parameters.privateNugetFeedName }}
+#   - task: UseDotNet@2
+#     name: 'InstallDotNetSdk'
+#     displayName: 'Install the .Net Core sdk'
+#     inputs:
+#       packageType: 'sdk'
+#       version: ${{ parameters.dotNetSdkVersion }}
 
-  # - task: DotNetCoreCLI@2
-  #   displayName: 'Executing Test Cases'
-  #   inputs:
-  #     command: 'test'
-  #     projects: '${{ parameters.projects }}'
-  #     arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+#   - task: NuGetToolInstaller@1
+#     displayName: 'Installing the nuget packages'
 
-  # - task: PublishCodeCoverageResults@1
-  #   displayName: 'Code Coevrage Results'
-  #   inputs:
-  #     codeCoverageTool: 'Cobertura'
-  #     summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
-  #     pathToSources: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
-  #     failIfCoverageEmpty: true
+#   - task: DotNetCoreCLI@2
+#     displayName: 'Restoring the nuget packages'
+#     inputs:
+#       command: 'restore'
+#       projects: '${{ parameters.projects }}'
+#       feedsToUse: 'select'
+#       vstsFeed: ${{ parameters.privateNugetFeedName }}
 
-  - task: PowerShell@2
-    displayName: 'Verifying Code Coverage Results'
-    inputs:
-      targetType: 'inline'
-      script: |
-        if (90 -ge 80) {
-                        vso[task.setvariable variable=anyTfChanges;]true
-                        Write-Output "vso[task.setvariable variable=anyTfChanges]true"
-                        Write-Host "variables.anyTfChanges"
-                        Write-Host "90 is greater than 80. Changing variable value to true."
-                        Write-Output "##vso[task.setvariable variable=myVariable]true"
-                      } else {
-                        Write-Host "Code coverage is below 80% ($coveragePercent%)"
-                        Write-Host "Aborting deployment."
-                        exit 1
-                      }
+#   - task: DotNetCoreCLI@2
+#     displayName: 'Executing Test Cases'
+#     inputs:
+#       command: 'test'
+#       projects: '${{ parameters.projects }}'
+#       arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
 
-  # - task: DotNetCoreCLI@2
-  #   displayName: 'Build ${{ parameters.projectName }}'
-  #   condition: eq(variables.anyTfChanges, true)
-  #   inputs:
-  #     command: 'build'
-  #     projects: '${{ parameters.projects }}'
-  #     arguments: '--output ${{ parameters.workingDirectory}}/${{ parameters.projectName}}_output --configuration Release'
+#   - task: PublishCodeCoverageResults@1
+#     displayName: 'Code Coevrage Results'
+#     inputs:
+#       codeCoverageTool: 'Cobertura'
+#       summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
+#       pathToSources: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+#       failIfCoverageEmpty: true
 
-  # - task: ArchiveFiles@2
-  #   displayName: 'Archive ${{ parameters.projectName }}'
-  #   inputs:
-  #     rootFolderOrFile: '${{ parameters.workingDirectory}}/${{ parameters.projectName }}_output'
-  #     includeRootFolder: true
-  #     archiveType: 'zip'
-  #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-  #     replaceExistingArchive: true
+#   - task: PowerShell@2
+#     displayName: 'Verifying Code Coverage Results'
+#     inputs:
+#       targetType: 'inline'
+#       script: |
+#         $coverageXml = "$(Build.ArtifactStagingDirectory)/TestResults/Coverage/coverage.cobertura.xml"
+
+#                       # Load the coverage XML report
+#                       $coverageReport = [xml](Get-Content $coverageXml)
+
+#                       # Extract the coverage percentage from the report
+#                       $coveragePercent = [float]$coverageReport.coverage.'line-rate' * 100
+
+#                       if ($coveragePercent -ge 80) {
+#                         Write-Host "Code coverage is above 80% ($coveragePercent%)"
+#                         Write-Output "##vso[task.setvariable variable=anyTfChanges]true"
+#                         Write-Host "vso[task.setvariable variable=anyTfChanges;]true"
+#                         Write-Host "Proceeding with deployment..."
+#                       } else {
+#                         Write-Host "Code coverage is below 80% ($coveragePercent%)"
+#                         Write-Host "Aborting deployment."
+#                         exit 1
+#                       }
+
+#   - task: DotNetCoreCLI@2
+#     displayName: 'Build ${{ parameters.projectName }}'
+#     condition: eq('${{ parameters.anyTfChanges }}', 'true')
+#     inputs:
+#       command: 'build'
+#       projects: '${{ parameters.projects }}'
+#       arguments: '--output ${{ parameters.workingDirectory}}/${{ parameters.projectName}}_output --configuration Release'
+
+#   - task: ArchiveFiles@2
+#     displayName: 'Archive ${{ parameters.projectName }}'
+#     inputs:
+#       rootFolderOrFile: '${{ parameters.workingDirectory}}/${{ parameters.projectName }}_output'
+#       includeRootFolder: true
+#       archiveType: 'zip'
+#       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+#       replaceExistingArchive: true
