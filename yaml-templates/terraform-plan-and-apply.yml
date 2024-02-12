@@ -10,9 +10,9 @@ parameters:
   - name: backendAzureRmContainerName
   - name: backendAzureRmKey
   - name: varFile
+  - name: anyTfChanges
+    default: false
 
-variables:
-  anyTfChanges: false
 
 steps:
   - checkout: self

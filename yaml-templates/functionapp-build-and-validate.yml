@@ -12,9 +12,9 @@ parameters:
   - name: privateNugetFeedName
     type: string
     default: 'atharvab496'
+  - name: anyTfChanges
+    default: false
 
-variables:
-  anyTfChanges: false
 
 steps:
   - checkout: self
