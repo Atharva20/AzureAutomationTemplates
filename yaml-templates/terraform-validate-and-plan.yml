@@ -46,4 +46,3 @@ steps:
       workingDirectory: '${{ parameters.workingDirectory }}'
       commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
       environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
-

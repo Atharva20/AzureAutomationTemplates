@@ -10,12 +10,16 @@ parameters:
   - name: backendAzureRmContainerName
   - name: backendAzureRmKey
   - name: varFile
-      
+
+variables:
+  anyTfChanges: false
+
 steps:
   - checkout: self
     clean: true
 
   - task: TerraformInstaller@1
+    displayName: 'Installing Terraform'
     inputs:
       terraformVersion: '1.6.2'
 
@@ -46,6 +50,7 @@ steps:
       workingDirectory: '${{ parameters.workingDirectory }}'
       commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
       environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
+
   - task: PowerShell@2
     displayName: 'Checking the tf-Plan'
     inputs:
@@ -73,6 +78,6 @@ steps:
       provider: 'azurerm'
       command: 'apply'
       workingDirectory: '${{ parameters.workingDirectory }}'
-      environmentServiceNameAzureRM: 'AzureIntegration'
-  
-  
+      environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
+
+      

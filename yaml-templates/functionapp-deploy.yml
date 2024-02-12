@@ -1,0 +1,20 @@
+# This Template builds a function app project, validates by running unit tests and publishes the code coverage.
+
+
+parameters:
+  - name: workingDirectory
+  - name: functionAppName
+  - name: environmentServiceNameAzureRM
+    
+steps:
+  - checkout: self
+    clean: true
+
+  - task: AzureFunctionApp@2
+    displayName: deploy the functions to function_app
+    inputs:
+      connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
+      appType: 'functionApp'
+      appName: '${{ parameters.functionAppName }}'
+      package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      deploymentMethod: 'auto'
