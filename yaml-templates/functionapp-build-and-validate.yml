@@ -69,6 +69,7 @@ steps:
                       if ($coveragePercent -ge 80) {
                         Write-Host "Code coverage is above 80% ($coveragePercent%)"
                         Write-Host "Proceeding with deployment..."
+                        exit 1
                       } else {
                         Write-Host "Code coverage is below 80% ($coveragePercent%)"
                         Write-Host "Aborting deployment."
