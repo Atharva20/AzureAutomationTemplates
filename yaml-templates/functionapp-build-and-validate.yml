@@ -78,7 +78,6 @@ steps:
 
   - task: DotNetCoreCLI@2
     displayName: 'Build ${{ parameters.projectName }}'
-    condition: succeeded()
     inputs:
       command: 'build'
       projects: '${{ parameters.projects }}'
