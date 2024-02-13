@@ -31,6 +31,6 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: '$(Pipeline.Workspace)/Flow/s'
+      package: '$(Pipeline.Workspace)/Flow'
       deploymentMethod: 'auto'
 
