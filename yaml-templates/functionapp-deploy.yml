@@ -11,6 +11,9 @@ parameters:
     
 steps:
 
+  - download: current
+    artifact: functionappartifact
+
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
@@ -19,3 +22,4 @@ steps:
       appName: '${{ parameters.functionAppName }}'
       package: ' $(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
       deploymentMethod: 'auto'
+
