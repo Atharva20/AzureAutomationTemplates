@@ -45,14 +45,6 @@ steps:
       projects: '${{ parameters.projects }}'
       arguments: '--configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
 
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Code Coevrage Results'
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/*.xml'
-      pathToSources: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
-      failIfCoverageEmpty: true
-
   - task: PowerShell@2
     displayName: 'Verifying Code Coverage Results'
     inputs:
@@ -92,8 +84,5 @@ steps:
       archiveFile: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
       replaceExistingArchive: true
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
-      ArtifactName: 'FunctionApp'
-      publishLocation: 'Container'
+  - publish: $(Build.ArtifactStagingDirectory)/azure_integration.zip
+    artifact: functionappartifact

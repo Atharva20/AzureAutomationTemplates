@@ -11,11 +11,11 @@ parameters:
     
 steps:
 
-  - task: AzureFunctionApp@2
+  - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
-      connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
+      azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: ' $(Pipeline.Workspace)/FunctionApp/azure_integration.zip'
+      package: ' $(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
       deploymentMethod: 'auto'
