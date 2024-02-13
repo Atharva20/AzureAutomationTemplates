@@ -11,12 +11,26 @@ parameters:
     
 steps:
 
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'specific'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      pipeline: '20'
+      buildVersionToDownload: 'latest'
+      downloadType: 'single'
+      artifactName: 'functionappartifact'
+      downloadPath: '$(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
+      cleanDestinationFolder: true
+
+  - publish: $(Pipeline.Workspace)
+    artifact: Flow
+
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: '$(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
+      package: '$(Pipeline.Workspace)/Flow/s'
       deploymentMethod: 'auto'
 
