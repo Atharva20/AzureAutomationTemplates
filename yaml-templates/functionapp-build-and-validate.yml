@@ -89,11 +89,11 @@ steps:
       rootFolderOrFile: '${{ parameters.workingDirectory}}/${{ parameters.projectName }}_output'
       includeRootFolder: true
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
       replaceExistingArchive: true
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
       ArtifactName: 'FunctionApp'
       publishLocation: 'Container'
