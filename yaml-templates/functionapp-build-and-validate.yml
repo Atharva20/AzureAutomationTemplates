@@ -2,6 +2,8 @@
 
 
 parameters:
+  - name: workingDirectory
+  - name: projectName
   - name: projects
     type: object
     default: []
@@ -10,6 +12,9 @@ parameters:
   - name: privateNugetFeedName
     type: string
     default: 'atharvab496'
+  - name: anyTfChanges
+    type: boolean
+    default: false
 
 steps:
   - checkout: self
@@ -70,3 +75,25 @@ steps:
                         exit 1
                       }
 
+  - task: DotNetCoreCLI@2
+    displayName: 'Build ${{ parameters.projectName }}'
+    inputs:
+      command: 'build'
+      projects: '${{ parameters.projects }}'
+      arguments: '--output ${{ parameters.workingDirectory}}/${{ parameters.projectName}}_output --configuration Release'
+      
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive ${{ parameters.projectName }}'
+    inputs:
+      rootFolderOrFile: '${{ parameters.workingDirectory}}/${{ parameters.projectName }}_output'
+      includeRootFolder: true
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
+      ArtifactName: 'FunctionApp'
+      publishLocation: 'Container'
