@@ -17,5 +17,5 @@ steps:
       connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
+      package: ' $(Pipeline.Workspace)/FunctionApp/$(Build.ArtifactStagingDirectory)/azure_integration.zip'
       deploymentMethod: 'auto'
