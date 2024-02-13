@@ -28,6 +28,6 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: ' $(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
+      package: ' (Pipeline.Workspace)/functionappartifact/azure_integration.zip'
       deploymentMethod: 'auto'
 
