@@ -4,10 +4,21 @@
 parameters:
   - name: functionAppName
   - name: environmentServiceNameAzureRM
+  - name: validatePipeline
+    default: 'Validate-Azure-Integration'
+  - name: projectName
+    default: 'AzureIntegration'
     
 steps:
-  - checkout: self
-    clean: true
+
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: '${{ parameters.projectName }}'
+      pipeline: '${{ parameters.validatePipeline }}'
+      buildVersionToDownload: 'latest'
+      artifactName: 'FunctionApp'
+      targetPath: '$(System.ArtifactsDirectory)'
 
   - task: AzureFunctionApp@2
     displayName: deploy the functions to function_app
