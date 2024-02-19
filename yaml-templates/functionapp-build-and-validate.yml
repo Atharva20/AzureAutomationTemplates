@@ -84,5 +84,10 @@ steps:
       archiveFile: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
       replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)/azure_integration.zip
-    artifact: functionappartifact
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+
+
