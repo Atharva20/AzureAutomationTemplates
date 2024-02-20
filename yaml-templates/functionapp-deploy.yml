@@ -11,19 +11,19 @@ parameters:
     
 steps:
 
-  # - task: DownloadBuildArtifacts@1
-  #   inputs:
-  #     buildType: 'specific'
-  #     project: '13bb6a66-2e93-47f2-b44e-28619d085240'
-  #     pipeline: '20'
-  #     buildVersionToDownload: 'latest'
-  #     downloadType: 'single'
-  #     artifactName: 'functionappartifact'
-  #     downloadPath: '$(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
-  #     cleanDestinationFolder: true
+  - checkout: self
+    clean: true
 
-  # - publish: $(Pipeline.Workspace)
-  #   artifact: Flow
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'specific'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      pipeline: '20'
+      buildVersionToDownload: 'latest'
+      downloadType: 'single'
+      artifactName: 'drop'
+      downloadPath: '$(System.DefaultWorkingDirectory)'
+      cleanDestinationFolder: true
 
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
@@ -31,6 +31,7 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: $(Build.ArtifactStagingDirectory)/azure_integration.zip
+      package: $(System.DefaultWorkingDirectory)/**/*.zip
       deploymentMethod: 'auto'
+      resourceGroupName: 'rg-azint-dev-sea-01'
 

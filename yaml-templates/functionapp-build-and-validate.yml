@@ -72,21 +72,18 @@ steps:
     inputs:
       command: 'build'
       projects: '${{ parameters.projects }}'
-      arguments: '--output ${{ parameters.workingDirectory}}/${{ parameters.projectName}}_output --configuration Release'
+      arguments: '--configuration $(buildConfiguration)'
       
 
-  - task: ArchiveFiles@2
-    displayName: 'Archive ${{ parameters.projectName }}'
+  - task: DotNetCoreCLI@2
     inputs:
-      rootFolderOrFile: '${{ parameters.workingDirectory}}/${{ parameters.projectName }}_output'
-      includeRootFolder: true
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
-      replaceExistingArchive: true
+      command: 'publish'
+      publishWebProjects: true
+      arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)'
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
       publishLocation: 'Container'
 
