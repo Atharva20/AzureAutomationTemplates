@@ -2,7 +2,8 @@
 
 
 parameters:
-  - name: workingDirectory
+  - name: workingDirectoryUnitTests
+  - name: workingDirectoryFunctionApp
   - name: projectName
   - name: projects
     type: object
@@ -80,6 +81,7 @@ steps:
       command: 'publish'
       publishWebProjects: true
       arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)'
+      workingDirectory: ${{ parameters.workingDirectoryFunctionApp }}'
 
   - task: PublishBuildArtifacts@1
     inputs:
