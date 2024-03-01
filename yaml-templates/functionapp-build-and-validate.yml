@@ -81,7 +81,7 @@ steps:
       command: 'publish'
       publishWebProjects: false
       projects: '**/FunctionApp/*.csproj'
-      arguments: '''--configuration Release --output publish_output'''
+      arguments: '--configuration Release --output publish_output'
       zipAfterPublish: false
       modifyOutputPath: false
 
