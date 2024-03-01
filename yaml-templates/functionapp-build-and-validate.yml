@@ -43,7 +43,7 @@ steps:
     inputs:
       command: 'build'
       projects: '**/FunctionApp/*.csproj'
-      arguments: '--output ${{ parameters.workingDirectory}}/${{parameters.projectName}}_output --configuration Release'     
+      arguments: '--configuration Release'     
 
 
   - task: DotNetCoreCLI@2
@@ -76,15 +76,25 @@ steps:
                       }
 
                       
-  - task: ArchiveFiles@2
-    displayName: 'Archiving function app artifacts'
+  - task: DotNetCoreCLI@2
     inputs:
-      rootFolderOrFile: '${{ parameters.workingDirectory}}/${{parameters.projectName}}_output'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/${{parameters.projectName}}_output.zip'
-      replaceExistingArchive: true
+      command: 'publish'
+      publishWebProjects: false
+      projects: '**/FunctionApp/*.csproj'
+      arguments: '''--configuration Release --output publish_output'''
+      zipAfterPublish: false
+      modifyOutputPath: false
 
-  - publish: $(Build.ArtifactStagingDirectory)/${{parameters.projectName}}_output.zip
-    artifact: azint
+  - task: ArchiveFiles@2
+    displayName: "Archive files"
+    inputs:
+      rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+      includeRootFolder: false
+      archiveFile: "$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip"
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip'
+      artifactName: 'drop'
+
 
