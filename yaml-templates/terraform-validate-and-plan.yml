@@ -46,3 +46,12 @@ steps:
       workingDirectory: '${{ parameters.workingDirectory }}'
       commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
       environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
+
+  - task: TerraformTaskV4@4
+    displayName: 'Apply Terraform'
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '${{ parameters.workingDirectory }}'
+      commandOptions: 'tfplan'
+      environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
