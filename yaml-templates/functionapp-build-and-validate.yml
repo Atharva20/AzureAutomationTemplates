@@ -74,6 +74,8 @@ steps:
                         Write-Host "Aborting deployment."
                         exit 1
                       }
+
+                      
   - task: ArchiveFiles@2
     displayName: 'Archiving function app artifacts'
     inputs:

@@ -11,6 +11,15 @@ parameters:
     
 steps:
 
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      definition: '20'
+      buildVersionToDownload: 'latest'
+      targetPath: '$(Pipeline.Workspace)/azint'
+
+      
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
