@@ -17,6 +17,6 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: '$(Pipeline.Workspace)/azint//${{parameters.projectName}}_output.zip'
+      package: '$(Pipeline.Workspace)/azint/${{parameters.projectName}}_output.zip'
       
 
