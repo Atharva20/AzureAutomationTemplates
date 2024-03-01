@@ -4,8 +4,6 @@
 parameters:
   - name: workingDirectory
   - name: projectName
-  - name: functionAppName
-  - name: environmentServiceNameAzureRM
   - name: projects
     type: object
     default: []
@@ -73,7 +71,7 @@ steps:
     displayName: 'Build ${{ parameters.projectName }}'
     inputs:
       command: 'build'
-      projects: '${{ parameters.projects }}'
+      projects: '**/FunctionApp/*.csproj'
       arguments: '--output ${{ parameters.workingDirectory}}/${{ parameters.projectName}}_output --configuration Release'
       
 
@@ -92,13 +90,5 @@ steps:
       ArtifactName: 'drop'
       publishLocation: 'Container'
 
-  - task: AzureFunctionApp@1
-    displayName: deploy the functions to function_app
-    inputs:
-      azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
-      appType: 'functionApp'
-      appName: '${{ parameters.functionAppName }}'
-      package: $(Build.ArtifactStagingDirectory)/azure_integration.zip
-      deploymentMethod: 'auto'
 
 
