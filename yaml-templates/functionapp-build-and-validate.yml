@@ -72,13 +72,13 @@ steps:
     inputs:
       command: 'build'
       projects: '**/FunctionApp/*.csproj'
-      arguments: '--output ${{ parameters.workingDirectory}}/${{ parameters.projectName}}_output --configuration Release'
+      arguments: '--output ${{ parameters.workingDirectory}}/${{parameters.projectName}}_output --configuration Release'
       
 
   - task: ArchiveFiles@2
     displayName: 'Archive ${{ parameters.projectName }}'
     inputs:
-      rootFolderOrFile: '${{ parameters.workingDirectory}}/${{ parameters.projectName }}_output'
+      rootFolderOrFile: '${{ parameters.workingDirectory}}/${{parameters.projectName}}_output'
       includeRootFolder: true
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
@@ -86,7 +86,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/azure_integration.zip'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
       publishLocation: 'Container'
 
