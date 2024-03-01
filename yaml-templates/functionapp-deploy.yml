@@ -17,6 +17,6 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package:  '$(System.ArtifactsDirectory)/*.zip'
+      package:  '$(System.DefaultWorkingDirectory)/**/*.zip'
       
 
