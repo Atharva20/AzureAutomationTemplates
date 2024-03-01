@@ -13,7 +13,9 @@ steps:
 
   - task: DownloadBuildArtifacts@1
     inputs:
-      buildType: 'current'
+      buildType: 'specific'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      pipeline: '20'
       buildVersionToDownload: 'latest'
       downloadType: 'single'
       artifactName: 'drop'
