@@ -44,7 +44,7 @@ steps:
       provider: 'azurerm'
       command: 'plan'
       workingDirectory: '${{ parameters.workingDirectory }}'
-      commandOptions: '-input=false -out="tf.plan" -var-file="${{ parameters.varFile }}"'
+      commandOptions: '-input=false -out="tfplan" -var-file="${{ parameters.varFile }}"'
       environmentServiceNameAzureRM: '${{ parameters.environmentServiceNameAzureRM }}'
 
   - task: TerraformTaskV4@4
