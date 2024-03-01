@@ -77,7 +77,7 @@ steps:
   - task: ArchiveFiles@2
     displayName: 'Archiving function app artifacts'
     inputs:
-      rootFolderOrFile: '--output ${{ parameters.workingDirectory}}/${{parameters.projectName}}_output --configuration Release'
+      rootFolderOrFile: '${{ parameters.workingDirectory}}/${{parameters.projectName}}_output'
       includeRootFolder: false
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/${{parameters.projectName}}_output.zip'
