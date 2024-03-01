@@ -11,20 +11,11 @@ parameters:
     
 steps:
 
-  - task: DownloadBuildArtifacts@1
+  - task: DownloadPipelineArtifact@2
     inputs:
-      buildType: 'specific'
-      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
-      pipeline: '20'
-      buildVersionToDownload: 'latest'
-      downloadType: 'single'
-      artifactName: 'drop'
-      downloadPath: '$(System.ArtifactsDirectory)'
-      cleanDestinationFolder: true
-
-  #'$(Pipeline.Workspace)/functionappartifact/azure_integration.zip'
-  # - publish: $(Pipeline.Workspace)
-  #   artifact: Flow
+      buildType: 'current'
+      artifactName: 'azintartifact'
+      targetPath: '$(Pipeline.Workspace)'
 
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
@@ -32,6 +23,7 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: $(System.ArtifactsDirectory)/azure_integration.zip
-      deploymentMethod: 'auto'
+      package: '$(Pipeline.Workspace)/**/*.zip'
+      deploymentMethod: 'zipDeploy'
+      
 
