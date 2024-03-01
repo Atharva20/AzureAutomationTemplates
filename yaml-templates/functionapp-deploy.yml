@@ -11,19 +11,12 @@ parameters:
     
 steps:
 
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      buildType: 'current'
-      artifactName: 'azintartifact'
-      targetPath: '$(Pipeline.Workspace)'
-
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{ parameters.functionAppName }}'
-      package: '$(Pipeline.Workspace)/**/*.zip'
-      deploymentMethod: 'zipDeploy'
+      package: '$(Pipeline.Workspace)/azint//${{parameters.projectName}}_output.zip'
       
 

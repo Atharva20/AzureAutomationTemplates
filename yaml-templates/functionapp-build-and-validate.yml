@@ -39,6 +39,14 @@ steps:
       vstsFeed: ${{ parameters.privateNugetFeedName }}
 
   - task: DotNetCoreCLI@2
+    displayName: 'Build ${{ parameters.projectName }}'
+    inputs:
+      command: 'build'
+      projects: '**/FunctionApp/*.csproj'
+      arguments: '--output ${{ parameters.workingDirectory}}/${{parameters.projectName}}_output --configuration Release'     
+
+
+  - task: DotNetCoreCLI@2
     displayName: 'Executing Test Cases'
     inputs:
       command: 'test'
@@ -66,24 +74,15 @@ steps:
                         Write-Host "Aborting deployment."
                         exit 1
                       }
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Build ${{ parameters.projectName }}'
+  - task: ArchiveFiles@2
+    displayName: 'Archiving function app artifacts'
     inputs:
-      command: 'build'
-      projects: '**/FunctionApp/*.csproj'
-      arguments: '--configuration $(BuildConfiguration)'      
+      rootFolderOrFile: '--output ${{ parameters.workingDirectory}}/${{parameters.projectName}}_output --configuration Release'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/${{parameters.projectName}}_output.zip'
+      replaceExistingArchive: true
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Publish ${{ parameters.projectName }}'
-    inputs:
-      command: 'publish'
-      publishWebProjects: false
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)'
-      artifact: 'azintartifact'
-      publishLocation: 'pipeline'
+  - publish: $(Build.ArtifactStagingDirectory)/${{parameters.projectName}}_output.zip
+    artifact: azint
 
