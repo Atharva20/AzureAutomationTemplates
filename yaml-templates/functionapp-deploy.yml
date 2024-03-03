@@ -30,7 +30,7 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/drop/azint.zip'
+      package: '$(Pipeline.Workspace)/drop'
       deploymentMethod: 'zipDeploy'
       
 
