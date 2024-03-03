@@ -21,7 +21,7 @@ steps:
       buildVersionToDownload: 'latest'
       downloadType: 'single'
       artifactName: 'azint'
-      downloadPath: '$(Pipeline.Workspace)/azint'
+      downloadPath: '$(Pipeline.Workspace)/azint/azint.zip'
       cleanDestinationFolder: true
 
   - task: AzureFunctionApp@1
