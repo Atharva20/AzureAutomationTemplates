@@ -13,16 +13,16 @@ steps:
   - checkout: self
     clean: true
 
-  # - task: DownloadBuildArtifacts@1
-  #   inputs:
-  #     buildType: 'specific'
-  #     project: '13bb6a66-2e93-47f2-b44e-28619d085240'
-  #     pipeline: '20'
-  #     buildVersionToDownload: 'latest'
-  #     downloadType: 'single'
-  #     artifactName: 'azint'
-  #     downloadPath: '$(Pipeline.Workspace)/azint'
-  #     cleanDestinationFolder: true
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'specific'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      pipeline: '20'
+      buildVersionToDownload: 'latest'
+      downloadType: 'single'
+      artifactName: 'azint'
+      downloadPath: '$(Pipeline.Workspace)/azint'
+      cleanDestinationFolder: true
 
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
