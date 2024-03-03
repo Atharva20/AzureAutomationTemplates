@@ -16,8 +16,8 @@ steps:
   - task: DownloadBuildArtifacts@1
     inputs:
       buildType: 'specific'
-      project: '${{ parameters.projectName }}'
-      pipeline: '${{ parameters.validatePipeline }}'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      pipeline: '20'
       buildVersionToDownload: 'latest'
       downloadType: 'single'
       artifactName: 'azint'
@@ -27,10 +27,9 @@ steps:
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
-      azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
-      appType: 'functionApp'
-      appName: '${{parameters.functionAppName}}'
+      azureSubscription: ${{ parameters.environmentServiceNameAzureRM }}
+      appType: functionApp
+      appName: ${{parameters.functionAppName}}
       package: '$(Pipeline.Workspace)/azint/azint.zip'
-      deploymentMethod: 'zipDeploy'
       
 
