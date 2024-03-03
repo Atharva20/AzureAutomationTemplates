@@ -1,22 +1,22 @@
-# #This template will validate and plan the Terraform validate pipeline
+#This template will validate and plan the Terraform validate pipeline
 
 
-# parameters:
-#   - name: workingDirectory
-#   - name: backendServiceArm
-#   - name: environmentServiceNameAzureRM
-#   - name: backendAzureRmResourceGroupName
-#   - name: backendAzureRmStorageAccountName
-#   - name: backendAzureRmContainerName
-#   - name: backendAzureRmKey
-#   - name: varFile
-#   - name: anyTfChanges
-#     default: false
+parameters:
+  - name: workingDirectory
+  - name: backendServiceArm
+  - name: environmentServiceNameAzureRM
+  - name: backendAzureRmResourceGroupName
+  - name: backendAzureRmStorageAccountName
+  - name: backendAzureRmContainerName
+  - name: backendAzureRmKey
+  - name: varFile
+  - name: anyTfChanges
+    default: false
 
 
-# steps:
-#   - checkout: self
-#     clean: true
+steps:
+  - checkout: self
+    clean: true
 
 #   - task: TerraformInstaller@1
 #     displayName: 'Installing Terraform'
