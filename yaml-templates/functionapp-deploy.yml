@@ -7,7 +7,7 @@ parameters:
   - name: validatePipeline
     default: 'Validate-Azure-Integration'
   - name: projectName
-    default: 'AzureIntegration'
+    default: 'Azure-Integration'
     
 steps:
 
