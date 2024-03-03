@@ -14,9 +14,9 @@ steps:
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
-      azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
-      appType: 'functionApp'
-      appName: '${{ parameters.functionAppName }}'
-      package:  '$(System.DefaultWorkingDirectory)'
+      azureSubscription: ${{ parameters.environmentServiceNameAzureRM }}
+      appType: functionApp
+      appName: ${{parameters.functionAppName}}
+      package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
       
 
