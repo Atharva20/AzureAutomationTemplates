@@ -31,5 +31,6 @@ steps:
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
       package: '$(Pipeline.Workspace)/drop/'
+      deploymentMethod: 'auto'
       
 
