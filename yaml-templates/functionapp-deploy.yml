@@ -20,7 +20,7 @@ steps:
       pipeline: '${{ parameters.validatePipeline }}'
       buildVersionToDownload: 'latest'
       downloadType: 'single'
-      artifactName: 'drop'
+      artifactName: 'azint'
       downloadPath: '$(Pipeline.Workspace)'
       cleanDestinationFolder: true
 
