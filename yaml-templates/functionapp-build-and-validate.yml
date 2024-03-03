@@ -84,6 +84,6 @@ steps:
       archiveFile: $(Build.artifactStagingDirectory)/azint.zip
       replaceExistingArchive: true
 
-  - publish: $(Build.artifactStagingDirectory)
+  - publish: $(Build.artifactStagingDirectory)/azint.zip
     artifact: drop
 
