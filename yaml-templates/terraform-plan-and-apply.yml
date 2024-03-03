@@ -1,4 +1,4 @@
-This template will validate and plan the Terraform validate pipeline
+#This template will validate and plan the Terraform validate pipeline
 
 
 parameters:
