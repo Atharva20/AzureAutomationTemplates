@@ -21,7 +21,7 @@ steps:
       buildVersionToDownload: 'latest'
       downloadType: 'single'
       artifactName: 'azint'
-      downloadPath: '$(Pipeline.Workspace)/drop'
+      downloadPath: '$(Pipeline.Workspace)/azint'
       cleanDestinationFolder: true
 
   - task: AzureFunctionApp@1
@@ -30,7 +30,7 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/drop/azint.zip'
+      package: '$(Pipeline.Workspace)/azint/azint.zip'
       deploymentMethod: 'zipDeploy'
       
 

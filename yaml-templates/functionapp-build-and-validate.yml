@@ -42,7 +42,7 @@ steps:
     displayName: 'Build ${{ parameters.projectName }}'
     inputs:
       command: 'build'
-      projects: '**/FunctionApp/*.csproj'
+      projects: '${{ parameters.projects }}'
       arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release     
 
 
@@ -84,6 +84,6 @@ steps:
       archiveFile: $(Build.artifactStagingDirectory)/azint.zip
       replaceExistingArchive: true
 
-  - publish: $(Build.artifactStagingDirectory)
-    artifact: drop
+  - publish: $(Build.artifactStagingDirectory)/azint.zip
+    artifact: azint
 
