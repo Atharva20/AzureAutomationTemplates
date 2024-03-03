@@ -14,8 +14,8 @@ steps:
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'specific'
-      project: '${{ parameters.projectName }}'
-      definition: :'${{ parameters.validatePipeline }}'
+      project: '13bb6a66-2e93-47f2-b44e-28619d085240'
+      definition: '20'
       buildVersionToDownload: 'latest'
       targetPath: '$(Pipeline.Workspace)'
 
