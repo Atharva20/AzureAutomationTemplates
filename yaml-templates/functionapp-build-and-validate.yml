@@ -81,9 +81,9 @@ steps:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
       includeRootFolder: false
       archiveType: zip
-      archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      archiveFile: $(Build.artifactStagingDirectory)/azint.zip
       replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    artifact: drop
+  - publish: $(Build.artifactStagingDirectory)/azint.zip
+    artifact: azint
 
