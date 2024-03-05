@@ -37,6 +37,7 @@ steps:
       projects: '${{ parameters.projects }}'
       feedsToUse: 'select'
       vstsFeed: ${{ parameters.privateNugetFeedName }}
+      
 
   - task: DotNetCoreCLI@2
     displayName: 'Build ${{ parameters.projectName }}'
