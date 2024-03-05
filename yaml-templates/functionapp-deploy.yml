@@ -31,7 +31,6 @@ steps:
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
       package: '$(Pipeline.Workspace)/drop/azint.zip'
-      appSettings: '{"WEBSITE_RUN_FROM_ZIP": "1", "WEBSITE_RUN_FROM_PACKAGE": "1"}'
       deploymentMethod: 'runFromPackage'
       
       
