@@ -30,5 +30,5 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/drop/*.zip'
+      package: '$(Pipeline.Workspace)/*.zip'
 

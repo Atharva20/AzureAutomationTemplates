@@ -43,8 +43,7 @@ steps:
     displayName: 'Build ${{ parameters.projectName }}'
     inputs:
       command: 'build'
-      projects: |
-          $(workingDirectory)/*.csproj
+      projects: '**/FunctionApp/*.csproj'
       arguments: --output publish_output --configuration Release     
 
 
@@ -83,6 +82,7 @@ steps:
     inputs:
       rootFolderOrFile: 'publish_output'
       archiveType: zip
+      includeRootFolder: false
       archiveFile: $(Build.artifactStagingDirectory)/azint.zip
       replaceExistingArchive: true
 
