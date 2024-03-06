@@ -8,10 +8,10 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '391d3368-1735-4d24-8370-bf55c0b7fb5b'
+  azureSubscription: 'AzureIntegration'
 
   # Function app name
-  functionAppName: ''
+  functionAppName: 'fa-azint-dev-sea-001'
 
   # Agent VM image name
   vmImageName: 'windows-2019'
