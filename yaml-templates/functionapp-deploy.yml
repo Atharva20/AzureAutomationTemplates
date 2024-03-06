@@ -30,9 +30,5 @@ steps:
       azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/drop/azint.zip'
-      deploymentMethod: 'zipDeploy'
-      appSettings: 
-      "WEBSITE_RUN_FROM_PACKAGE": "1"  # Specify WEBSITE_RUN_FROM_PACKAGE setting
-      "WEBSITE_RUN_FROM_ZIP": "1"
+      package: '$(Pipeline.Workspace)/drop/*.zip'
 

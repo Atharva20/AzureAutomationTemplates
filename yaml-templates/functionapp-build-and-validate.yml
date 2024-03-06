@@ -43,7 +43,8 @@ steps:
     displayName: 'Build ${{ parameters.projectName }}'
     inputs:
       command: 'build'
-      projects: '**/FunctionApp/*.csproj'
+      projects: |
+          $(workingDirectory)/*.csproj
       arguments: --output publish_output --configuration Release     
 
 
