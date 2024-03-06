@@ -13,11 +13,17 @@ steps:
   - checkout: self
     clean: true
 
-  - download: current
-    displayName: 'Donload Artifacts'
-    artifact: drop
+  - task: DownloadBuildArtifacts@1
+    inputs:
+      buildType: 'specific'
+      project: '${{ parameters.projectName }}'
+      pipeline: '${{ parameters.validatePipeline }}'
+      buildVersionToDownload: 'latest'
+      downloadType: 'single'
+      artifactName: 'drop'
+      downloadPath: '$(Pipeline.Workspace)/drop'
+      cleanDestinationFolder: true
 
-    
   - task: AzureFunctionApp@1
     displayName: deploy the functions to function_app
     inputs:
@@ -25,4 +31,8 @@ steps:
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
       package: '$(Pipeline.Workspace)/drop/azint.zip'
+      deploymentMethod: 'zipDeploy'
+      appSettings: 
+      "WEBSITE_RUN_FROM_PACKAGE": "1"  # Specify WEBSITE_RUN_FROM_PACKAGE setting
+      "WEBSITE_RUN_FROM_ZIP": "1"
 
