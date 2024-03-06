@@ -33,5 +33,5 @@ steps:
       package: '$(Pipeline.Workspace)/drop/azint.zip'
       deploymentMethod: 'zipDeploy'
       appSettings:  
-      "WEBSITE_RUN_FROM_ZIP": "1"
+      "WEBSITE_RUN_FROM_PACAKAGE": "1"
 
