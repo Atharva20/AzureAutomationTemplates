@@ -13,6 +13,7 @@ steps:
   - checkout: self
     clean: true
 
+
   - task: DownloadBuildArtifacts@1
     inputs:
       buildType: 'specific'
@@ -24,11 +25,13 @@ steps:
       downloadPath: '$(Pipeline.Workspace)/drop'
       cleanDestinationFolder: true
 
-  - task: AzureFunctionApp@1
+
+  - task: AzureFunctionApp@2
     displayName: deploy the functions to function_app
     inputs:
-      azureSubscription: '${{ parameters.environmentServiceNameAzureRM }}'
+      connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/*.zip'
+      package: '$(Pipeline.Workspace)/drop/*.zip'
+      deploymentMethod: 'zipDeploy'
 
