@@ -2,7 +2,6 @@
 
 
 parameters:
-  - name: workingDirectory
   - name: projectName
   - name: projects
     type: object
@@ -12,9 +11,6 @@ parameters:
   - name: privateNugetFeedName
     type: string
     default: 'atharvab496'
-  - name: anyTfChanges
-    type: boolean
-    default: false
 
 steps:
   - checkout: self
@@ -83,9 +79,9 @@ steps:
       rootFolderOrFile: 'publish_output'
       archiveType: zip
       includeRootFolder: false
-      archiveFile: $(Build.artifactStagingDirectory)/azint.zip
+      archiveFile: $(Build.artifactStagingDirectory)/azfuncint.zip
       replaceExistingArchive: true
 
-  - publish: $(Build.artifactStagingDirectory)/azint.zip
+  - publish: $(Build.artifactStagingDirectory)/azfuncint.zip
     artifact: drop
 

@@ -1,8 +1,8 @@
-# This Template builds a function app project, validates by running unit tests and publishes the code coverage.
+# This Template builds a logic app project, validates by running unit tests and publishes the code coverage.
 
 
 parameters:
-  - name: functionAppName
+  - name: logicAppName
   - name: environmentServiceNameAzureRM
   - name: validatePipeline
     default: 'Validate-Azure-Integration'
@@ -30,8 +30,9 @@ steps:
     displayName: deploy the functions to function_app
     inputs:
       connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
-      appType: 'functionApp'
-      appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/drop/azfuncint.zip'
+      appType: 'workflowapp'
+      appName: '${{parameters.logicappname}}'
+      package: '$(Pipeline.Workspace)/drop/azlogicint.zip'
       deploymentMethod: 'zipDeploy'
+
 

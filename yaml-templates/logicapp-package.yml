@@ -1,0 +1,25 @@
+# This Template builds a logic app project, validates by running unit tests and publishes the code coverage.
+
+
+parameters:
+  - name: workingDirectory
+    
+steps:
+  - checkout: self
+    clean: true
+
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive files'
+    inputs:
+      rootFolderOrFile: ${{parameters.workingDirectory}}
+      archiveType: zip
+      includeRootFolder: false
+      archiveFile: $(Build.artifactStagingDirectory)/azlogicint.zip
+      replaceExistingArchive: true
+
+
+  - publish: $(Build.artifactStagingDirectory)/azlogicint.zip
+    artifact: drop
+
+
