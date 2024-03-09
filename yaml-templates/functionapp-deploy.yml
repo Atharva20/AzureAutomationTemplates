@@ -21,8 +21,8 @@ steps:
       pipeline: '${{ parameters.validatePipeline }}'
       buildVersionToDownload: 'latest'
       downloadType: 'single'
-      artifactName: 'drop'
-      downloadPath: '$(Pipeline.Workspace)/drop'
+      artifactName: 'functionapp'
+      downloadPath: '$(Pipeline.Workspace)/functionapp'
       cleanDestinationFolder: true
 
 
@@ -32,6 +32,6 @@ steps:
       connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'functionApp'
       appName: '${{parameters.functionAppName}}'
-      package: '$(Pipeline.Workspace)/drop/azfuncint.zip'
+      package: '$(Pipeline.Workspace)/functionapp/azfuncint.zip'
       deploymentMethod: 'zipDeploy'
 

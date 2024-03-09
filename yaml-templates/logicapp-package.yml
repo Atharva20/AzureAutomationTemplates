@@ -20,6 +20,6 @@ steps:
 
 
   - publish: $(Build.artifactStagingDirectory)/azlogicint.zip
-    artifact: drop
+    artifact: 'logicapp'
 
 

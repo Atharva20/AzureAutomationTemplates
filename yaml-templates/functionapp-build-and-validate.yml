@@ -83,5 +83,5 @@ steps:
       replaceExistingArchive: true
 
   - publish: $(Build.artifactStagingDirectory)/azfuncint.zip
-    artifact: drop
+    artifact: functionapp
 

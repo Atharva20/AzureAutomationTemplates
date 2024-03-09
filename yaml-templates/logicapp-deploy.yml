@@ -21,8 +21,8 @@ steps:
       pipeline: '${{ parameters.validatePipeline }}'
       buildVersionToDownload: 'latest'
       downloadType: 'single'
-      artifactName: 'drop'
-      downloadPath: '$(Pipeline.Workspace)/drop'
+      artifactName: 'logicapp'
+      downloadPath: '$(Pipeline.Workspace)/logicapp'
       cleanDestinationFolder: true
 
 
@@ -32,7 +32,7 @@ steps:
       connectedServiceNameARM: '${{ parameters.environmentServiceNameAzureRM }}'
       appType: 'workflowapp'
       appName: '${{parameters.logicappname}}'
-      package: '$(Pipeline.Workspace)/drop/azlogicint.zip'
+      package: '$(Pipeline.Workspace)/logicapp/azlogicint.zip'
       deploymentMethod: 'zipDeploy'
 
 
